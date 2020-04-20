@@ -59,11 +59,14 @@ void variables_and_addresses(void)
 	l, l_pointer, &*(l_pointer+1), (long) &*(l_pointer+1) - (long) pointer, sizeof(l));
 
   // ### Hacking memory
-  // using this pointer arithmethic we can now very easily proce around in our memory and print out the values for arbitrary addresses.
+  // using this pointer arithmethic we can now very easily proke around in our memory and print out the values for arbitrary addresses.
   for(int j=0;j<15;j++)
   {     
-	printf("we are at address %x the value at pointer + %i the stored valueis = %i\n", &*(pointer+j), j, *(pointer+j));
-        if(&*(pointer+j) == l_pointer)
+	int *currentPointer = pointer + j;
+ 	printf("we are pointing at address %x (+%i), if we goto the value it is = %i\n", currentPointer, j, *currentPointer);
+        
+        // here we are comparing if the value of currentPointer is the same as l_pointer. i.e. do they point at the same thing?.
+        if(currentPointer == l_pointer)
 	{
 	   printf("Did you notice? we just visited the byte-address which was used to save our long \"l\". it was located at: %x, lets try to print out the value as a long: %li \n", l_pointer, *(pointer + j));
 	}
