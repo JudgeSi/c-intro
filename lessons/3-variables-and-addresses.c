@@ -33,7 +33,7 @@ void variables_and_addresses(void)
   printf("The size to store i is %li bytes \n", sizeof(i));
 
   // these bytes are located somewhere in memory. This location is called an address and is identitfied by the number of the starting byte.
-  // With the &-opeator we can request the value of any variable.
+  // With the &-opeator we can request the value of any address.
   printf("This is the location of i currently: %x \n", &i);
 
   // This value of an address is also called a pointer. 
@@ -42,8 +42,32 @@ void variables_and_addresses(void)
   int *pointer = &i;
   printf("The value of this pointer is the same as &i: %x  \n", pointer);
 
+  // ## Pointer Arithmethic
+
   // since pointers are just plain numbers for bytes in memory we can address anything we want in memory by just adding or subtracting from a pointer.
-  printf("The first byte in i: %c \n", pointer + 1);
+  // here we directly GOTO (*) to whatever is located directly at the pointer.
+  printf("The first byte in i: %i \n", *pointer);
+  // notice the brackets for proper GOTO statements.
+  printf("The second byte equals: %i. It is located at: %x .\n", *(pointer +1), &*(pointer+1));
+  printf("The second byte is located at %x that is %i bytes away from i. \n", 
+	&*(pointer+1), (long)  &*(pointer+1) - (long) pointer);
+  // So it appears the pointer arithmetic knows 4 bytes are takes by the int so adding 1 skips 4 bytes.
+  //lets test this with longs, which require more bytes to validate.
+  long l = 10;
+  long *l_pointer = &l;
+  printf("l is %i, the value is saved at adress %x adding one to pointer gives address: %x, that is %i bytes away. The same as the size required for the long (%i).\n",
+	l, l_pointer, &*(l_pointer+1), (long) &*(l_pointer+1) - (long) pointer, sizeof(l));
+
+  // ### Hacking memory
+  // using this pointer arithmethic we can now very easily proce around in our memory and print out the values for arbitrary addresses.
+  for(int j=0;j<15;j++)
+  {     
+	printf("we are at address %x the value at pointer + %i the stored valueis = %i\n", &*(pointer+j), j, *(pointer+j));
+        if(&*(pointer+j) == l_pointer)
+	{
+	   printf("Did you notice? we just visited the byte-address which was used to save our long \"l\". it was located at: %x, lets try to print out the value as a long: %li \n", l_pointer, *(pointer + j));
+	}
+  }
 
 
 
