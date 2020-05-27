@@ -33,7 +33,7 @@ void variables_and_addresses(void)
   printf("The size to store i is %li bytes \n", sizeof(i));
 
   // these bytes are located somewhere in memory. This location is called an address and is identitfied by the number of the starting byte.
-  // With the &-opeator we can request the value of any address.
+  // With the &-opeator we can access the address value of any variable..
   printf("This is the location of i currently: %x \n", &i);
 
   // This value of an address is also called a pointer. 
@@ -42,13 +42,21 @@ void variables_and_addresses(void)
   int *pointer = &i;
   printf("The value of this pointer is the same as &i: %x  \n", pointer);
 
+  // The reverse operation of the &-operation is the *-operation. With the *-operation we can take an address of a variable (i.e. &i) and jump to the actual value that is present at this address.
+  //  NOTE: this is completly different from the previous use of *, where it indicated a datatype (the pointer type). The use in this context is aimed at retrieving a value. think of it as a GOTO statement.
+  int valueAtPointer = *(pointer);
+  printf("If we GOTO (the value of) our pointer, we get back i = %i again \n", valueAtPointer);
+
+
   // ## Pointer Arithmethic
 
   // since pointers are just plain numbers for bytes in memory we can address anything we want in memory by just adding or subtracting from a pointer.
-  // here we directly GOTO (*) to whatever is located directly at the pointer.
+  // here we directly GOTO (*) whatever is located directly at the pointer.
   printf("The first byte in i: %i \n", *pointer);
-  // notice the brackets for proper GOTO statements.
-  printf("The second byte equals: %i. It is located at: %x .\n", *(pointer +1), &*(pointer+1));
+  
+  int *nextPointer = pointer+1;
+  
+  printf("The value at the next pointer equals: %i. The pointer is located at: %x .\n", *nextPointer, &nextPointer);
   printf("The second byte is located at %x that is %i bytes away from i. \n", 
 	&*(pointer+1), (long)  &*(pointer+1) - (long) pointer);
   // So it appears the pointer arithmetic knows 4 bytes are takes by the int so adding 1 skips 4 bytes.
